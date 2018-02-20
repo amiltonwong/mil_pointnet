@@ -26,11 +26,11 @@ def get_model(point_cloud, is_training, bn_decay=None):
     point_cloud_transformed = tf.matmul(point_cloud, transform)
     input_image = tf.expand_dims(point_cloud_transformed, -1)
 
-    net = tf_util.conv2d(inputs=input_image, num_output_channels=64, kernel_size=[1,3],
+    net = tf_util.conv2d(input_image, 64, [1,3],
                          padding='VALID', stride=[1,1],
                          bn=True, is_training=is_training,
                          scope='conv1', bn_decay=bn_decay)
-    net = tf_util.conv2d(inputs=net, num_output_channels=64, [1,1],
+    net = tf_util.conv2d(net, 64, [1,1],
                          padding='VALID', stride=[1,1],
                          bn=True, is_training=is_training,
                          scope='conv2', bn_decay=bn_decay)
@@ -41,21 +41,21 @@ def get_model(point_cloud, is_training, bn_decay=None):
     net_transformed = tf.matmul(tf.squeeze(net, axis=[2]), transform)
     net_transformed = tf.expand_dims(net_transformed, [2])
 
-    net = tf_util.conv2d(inputs=net_transformed, num_output_channels=64, kernel_size=[1,1],
+    net = tf_util.conv2d(net_transformed, 64, [1,1],
                          padding='VALID', stride=[1,1],
                          bn=True, is_training=is_training,
                          scope='conv3', bn_decay=bn_decay)
-    net = tf_util.conv2d(inputs=net, num_output_channels=128, kernel_size=[1,1],
+    net = tf_util.conv2d(net, 128, [1,1],
                          padding='VALID', stride=[1,1],
                          bn=True, is_training=is_training,
                          scope='conv4', bn_decay=bn_decay)
-    net = tf_util.conv2d(inputs=net, num_output_channels=1024, kernel_size=[1,1],
+    net = tf_util.conv2d(net, 1024, [1,1],
                          padding='VALID', stride=[1,1],
                          bn=True, is_training=is_training,
                          scope='conv5', bn_decay=bn_decay)
 
     # Symmetric function: max pooling
-    net = tf_util.max_pool2d(inputs=net, kernel_size=[num_point,1],
+    net = tf_util.max_pool2d(net, [num_point,1],
                              padding='VALID', scope='maxpool')
 
     net = tf.reshape(net, [batch_size, -1])
