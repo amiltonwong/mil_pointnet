@@ -1,1 +1,6 @@
 data/
+part_seg/hdf5_data/
+part_seg/PartAnnotation/
+part_seg/test_results/
+part_seg/train_results/
+sem_seg/indoor3d_sem_seg_hdf5_data/
