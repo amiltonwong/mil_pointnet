@@ -123,9 +123,6 @@ def get_bn_decay(batch):
 def train():
     with tf.Graph().as_default():
         with tf.device('/gpu:'+str(GPU_INDEX)):
-            # batch_size = 24
-            # pointclouds_pl : 24, 4096, 9 in shape
-            # labels_pl : 24, 4096,  in shape
             pointclouds_pl, labels_pl = placeholder_inputs(BATCH_SIZE, NUM_POINT)
             is_training_pl = tf.placeholder(tf.bool, shape=())
             
